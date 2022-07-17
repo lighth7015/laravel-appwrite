@@ -1,7 +1,4 @@
-<?php
-
-declare(strict_types=1);
-
+<?php declare(strict_types=1);
 namespace Lighth7015\AppWrite\Facades;
 
 use Illuminate\Support\Facades\Facade;
@@ -25,6 +22,6 @@ final class Firebase extends Facade
 {
     protected static function getFacadeAccessor(): string
     {
-        return 'firebase.manager';
+        return 'appwrite.manager';
     }
 }

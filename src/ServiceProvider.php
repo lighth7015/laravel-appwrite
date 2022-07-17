@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace lighth7015\AppWrite;
+namespace Lighth7015\AppWrite;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
