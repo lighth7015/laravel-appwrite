@@ -10,10 +10,8 @@ use Kreait\Firebase\Contract\RemoteConfig;
 use Kreait\Firebase\Contract\Storage;
 use Kreait\Firebase\Factory;
 
-class FirebaseProject
-{
+class FirebaseProject {
     protected Factory $factory;
-
     protected array $config;
 
     protected ?Auth $auth = null;
