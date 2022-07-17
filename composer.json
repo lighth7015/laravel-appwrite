@@ -1,0 +1,44 @@
+{
+    "name": "lighth7015/laravel-appwrite",
+    "description": "A Laravel package for AppWrite, using the AppWrite PHP SDK",
+    "keywords": ["laravel", "appwrite", "sdk", "api", "database", "fcm", "gcm"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robert Butler",
+            "email": "me@r-butler.net"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "appwrite/appwrite": "^6.0",
+        "illuminate/contracts": "^8.0 || ^9.0",
+        "illuminate/support": "^8.0 || ^9.0",
+        "symfony/cache": "^5.4 || ^6.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0 || 7.0",
+        "symplify/easy-coding-standard": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "lighth7015\\AppWrite\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lighth7015\\AppWrite\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lighth7015\\AppWrite\\ServiceProvider"
+            ],
+            "aliases": {
+                "Firebase": "Lighth7015\\AppWrite\\Facades\\Firebase"
+            }
+        }
+    }
+}
