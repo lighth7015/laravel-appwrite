@@ -23,7 +23,7 @@
     },
     "autoload": {
         "psr-4": {
-            "lighth7015\\AppWrite\\": "src/"
+            "Lighth7015\\AppWrite\\": "src/"
         }
     },
     "autoload-dev": {

@@ -22,8 +22,7 @@ class ServiceProvider extends Provider {
 		), 'config');
 	}
 
-	public function register(): void
-	{
+	public function register(): void {
 		// @codeCoverageIgnoreStart
 		if ($this->app instanceof Lumen) {
 			$this->app->configure('appwrite');
@@ -35,8 +34,8 @@ class ServiceProvider extends Provider {
 		// $this->app->singleton(FirebaseProjectManager::class, static fn (Container $app) => new FirebaseProjectManager($app));
 		// $this->app->alias(FirebaseProjectManager::class, 'appwrite.manager');
 		
-		$this->app->singleton(Appwrite\Services\Accont::class, static fn (Container $app) => $app->make(FirebaseProjectManager::class)->project()->auth());
-		$this->app->alias(Appwrite\Services\Account::class, 'appwrite.auth');
+		// $this->app->singleton(Appwrite\Services\Accont::class, static fn (Container $app) => $app->make(FirebaseProjectManager::class)->project()->auth());
+		// $this->app->alias(Appwrite\Services\Account::class, 'appwrite.auth');
 
 		// $this->app->singleton(Firebase\Contract\Database::class, static fn (Container $app) => $app->make(FirebaseProjectManager::class)->project()->database());
 		// $this->app->alias(Firebase\Contract\Database::class, 'appwrite.database');
