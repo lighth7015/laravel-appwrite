@@ -1,6 +1,8 @@
 <?php declare(strict_types=1);
 namespace Lighth7015\AppWrite;
 
+use Appwrite\Client;
+
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Str;
 
@@ -8,7 +10,7 @@ use Laravel\Lumen\Application as Lumen;
 use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider {
-	private const key = "appwrite";
+	private static string $key = "appwrite";
 
 	public function boot(): void {
 		// @codeCoverageIgnoreStart
@@ -25,15 +27,12 @@ class ServiceProvider extends Provider {
 		return realpath(Str::finish(__DIR__, Str::finish('../', $file)));
 	}
 
-	protected function configKey(string ...$keys): string {
-		return Str::finish( ServiceProvider::key, implode(".", $keys ));
-	}
-
 	protected function config(string $name = null): array {
-		$default = config($this->configKey('project'), null);
+		$withConfigKey = fn (string ...$keys): string => count($keys) > 0? Str::finish( static::$key, implode(".", $keys )): static::$key;
+		$withException = fn (string $param, string $prefix, string $suffix) => sprintf("%s %s %s", $prefix, $param, $suffix);
 		
-		if (!($config = config(Str::finish('appwrite.projects.', $name), config($this->configKey('project'), null)))) {
-			throw new InvalidArgumentException(Str::finish("AppWrite project ", Str::finish($name, " is not configured.")));
+		if (is_null( $config = config( withConfigKey( 'projects', $name ), null ))) {
+			throw new InvalidArgumentException(call_user_func($withException, $name, "AppWrite Project", "is not configured." ));
 		}
 		else {
 			return $config;
@@ -49,6 +48,8 @@ class ServiceProvider extends Provider {
 		// @codeCoverageIgnoreEnd
 		$this->mergeConfigFrom($this->filename('config/appwrite.php'), 'appwrite');
 
+		dd($this->config());
+		/*
 		$this->app->singleton(Client::class, function (Container $container) {
 			$client = (new Client($app))
 				->setEndpoint()
@@ -57,9 +58,9 @@ class ServiceProvider extends Provider {
 
 			// if (Arr::get())
 		});
+		*/		
 		
-		
-		$this->app->alias(AppWriteProjectManager::class, 'appwrite.manager');
+		//$this->app->alias(AppWriteProjectManager::class, 'appwrite.manager');
 		
 		// $this->app->singleton(Appwrite\Services\Accont::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->auth());
 		// $this->app->alias(Appwrite\Services\Account::class, 'appwrite.auth');
