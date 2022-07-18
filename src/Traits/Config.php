@@ -10,9 +10,9 @@ trait Config {
 
 	protected function config(string | null ...$keys) {
         $namespaces = explode( '\\', __NAMESPACE__ );
-        $getParentNamespace = fn() => Arr::get( $namespaces, count($namespaces) > 2? count($namespaces) - 1: Arr::last($namespaces));
+        $getParentNamespace = fn(int $index) => Arr::get( $namespaces, $index );
         
-        dd(call_user_func( $getParentNamespace ), $namespaces, count($namespaces) - 1 );
+        dd(call_user_func( $getParentNamespace, 1 ));
         
         $path = implode( ".", array_reduce( $keys, function (array $keys, string | null $key) {
 			if (is_string($key)) array_push( $keys, $key );
