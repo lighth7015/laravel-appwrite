@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 return [
     /*
@@ -103,21 +101,6 @@ return [
                 // ],
             ],
 
-            'dynamic_links' => [
-                /*
-                 * Dynamic links can be built with any URL prefix registered on
-                 *
-                 * https://console.firebase.google.com/u/1/project/_/durablelinks/links/
-                 *
-                 * You can define one of those domains as the default for new Dynamic
-                 * Links created within your project.
-                 *
-                 * The value must be a valid domain, for example,
-                 * https://example.page.link
-                 */
-                'default_domain' => env('APPWRITE_DYNAMIC_LINKS_DEFAULT_DOMAIN'),
-            ],
-
             /*
              * ------------------------------------------------------------------------
              * Firebase Cloud Storage
@@ -146,49 +129,6 @@ return [
              */
 
             'cache_store' => env('APPWRITE_CACHE_STORE', 'file'),
-
-            /*
-             * ------------------------------------------------------------------------
-             * Logging
-             * ------------------------------------------------------------------------
-             *
-             * Enable logging of HTTP interaction for insights and/or debugging.
-             *
-             * Log channels are defined in config/logging.php
-             *
-             * Successful HTTP messages are logged with the log level 'info'.
-             * Failed HTTP messages are logged with the the log level 'notice'.
-             *
-             * Note: Using the same channel for simple and debug logs will result in
-             * two entries per request and response.
-             */
-
-            'logging' => [
-                'http_log_channel' => env('APPWRITE_HTTP_LOG_CHANNEL'),
-                'http_debug_log_channel' => env('APPWRITE_HTTP_DEBUG_LOG_CHANNEL'),
-            ],
-
-            /*
-             * ------------------------------------------------------------------------
-             * HTTP Client Options
-             * ------------------------------------------------------------------------
-             *
-             * Behavior of the HTTP Client performing the API requests
-             */
-            'http_client_options' => [
-                /*
-                 * Use a proxy that all API requests should be passed through.
-                 * (default: none)
-                 */
-                'proxy' => env('APPWRITE_HTTP_CLIENT_PROXY'),
-
-                /*
-                 * Set the maximum amount of seconds (float) that can pass before
-                 * a request is considered timed out
-                 * (default: indefinitely)
-                 */
-                'timeout' => env('APPWRITE_HTTP_CLIENT_TIMEOUT'),
-            ],
         ],
     ],
 ];

@@ -1,93 +1,53 @@
 <?php declare(strict_types=1);
 namespace Lighth7015\AppWrite;
 
-use Kreait\Firebase\Contract\Auth;
-use Kreait\Firebase\Contract\Database;
-use Kreait\Firebase\Contract\DynamicLinks;
-use Kreait\Firebase\Contract\Firestore;
-use Kreait\Firebase\Contract\Messaging;
-use Kreait\Firebase\Contract\RemoteConfig;
-use Kreait\Firebase\Contract\Storage;
-use Kreait\Firebase\Factory;
+use Appwrite\Services\Account,
+	Appwrite\Services\Avatars,
+	Appwrite\Services\Client,
+	Appwrite\Services\Databases,
+	Appwrite\Services\Functions,
+	Appwrite\Services\Health,
+	Appwrite\Services\Locale,
+	Appwrite\Services\Storage,
+	Appwrite\Services\Teams,
+	Appwrite\Services\Users;
 
 class Project {
-    protected Factory $factory;
-    protected array $config;
+	protected string $project;
 
-    protected ?Auth $auth = null;
-    protected ?Database $database = null;
-    protected ?DynamicLinks $dynamicLinks = null;
-    protected ?Firestore $firestore = null;
-    protected ?Messaging $messaging = null;
-    protected ?RemoteConfig $remoteConfig = null;
-    protected ?Storage $storage = null;
+	private Account | null $account;
+	private Avatars | null $avatars;
+	private Databases | null $databases;
+	private Functions | null $functions;
+	private Health | null $health;
+	private Locale | null $locale;
+	private Storage | null $storage;
+	private Teams | null $teams;
+	private Users | null $users;
+	
+	public function __construct(Client $client, string $project) {
+		$client = $client->setProject((
+			$this->project = $project
+		));
+		
+		$this->account = new Account($client);
+		$this->avatars = new Avatars($client);
+		$this->databases = new Databases($client);
+		$this->functions = new Functions($client);
+		$this->health = new Health($client);
+		$this->locale = new Locale($client);
+		$this->storage = new Storage($client);
+		$this->teams = new Teams($client);
+		$this->users = new Users($client);
+	}
 
-    public function __construct(Factory $factory, array $config)
-    {
-        $this->factory = $factory;
-        $this->config = $config;
-    }
-
-    public function auth(): Auth
-    {
-        if (!$this->auth) {
-            $this->auth = $this->factory->createAuth();
-        }
-
-        return $this->auth;
-    }
-
-    public function database(): Database
-    {
-        if (!$this->database) {
-            $this->database = $this->factory->createDatabase();
-        }
-
-        return $this->database;
-    }
-
-    public function dynamicLinks(): DynamicLinks
-    {
-        if (!$this->dynamicLinks) {
-            $this->dynamicLinks = $this->factory->createDynamicLinksService($this->config['dynamic_links']['default_domain'] ?? null);
-        }
-
-        return $this->dynamicLinks;
-    }
-
-    public function firestore(): Firestore
-    {
-        if (!$this->firestore) {
-            $this->firestore = $this->factory->createFirestore();
-        }
-
-        return $this->firestore; // @codeCoverageIgnore
-    }
-
-    public function messaging(): Messaging
-    {
-        if (!$this->messaging) {
-            $this->messaging = $this->factory->createMessaging();
-        }
-
-        return $this->messaging;
-    }
-
-    public function remoteConfig(): RemoteConfig
-    {
-        if (!$this->remoteConfig) {
-            $this->remoteConfig = $this->factory->createRemoteConfig();
-        }
-
-        return $this->remoteConfig;
-    }
-
-    public function storage(): Storage
-    {
-        if (!$this->storage) {
-            $this->storage = $this->factory->createStorage();
-        }
-
-        return $this->storage;
-    }
+	public function account(): Account { return $this->account; }
+	public function avatars(): Avatars { return $this->avatars; }
+	public function databases(): Databases { return $this->databases; }
+	public function functions(): Functions { return $this->functions; }
+	public function storage(): Storage { return $this->storage; }
+	public function health(): Health { return $this->health; }
+	public function locale(): Locale { return $this->locale; }
+	public function teams(): Teams { return $this->teams; }
+	public function users(): Users { return $this->users; }
 }

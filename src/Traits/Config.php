@@ -7,6 +7,13 @@ trait Config {
 		return realpath(Str::finish(__DIR__, Str::finish('/../../', $file)));
 	}
 
+    protected function getProjectName(): string {
+        $namespaces = array_map( fn(string $it) => strtolower($it), explode( '\\', __NAMESPACE__ ));
+        $getParentNamespace = fn(int $index) => Arr::get( $namespaces, $index );
+        
+        return Arr::get( config( call_user_func( $getParentNamespace, 1 ), null), "project" );
+    }
+
 	protected function config(string | null ...$keys) {
         $namespaces = array_map( fn(string $it) => strtolower($it), explode( '\\', __NAMESPACE__ ));
         $getParentNamespace = fn(int $index) => Arr::get( $namespaces, $index );
@@ -17,7 +24,7 @@ trait Config {
 		}, array()));
 
 		if (is_null( $config = config( call_user_func( $getParentNamespace, 1 ), null)) === false) {
-			$config = Arr::get( $config, Str::finish( "projects.", Arr::get( $config, "project" )));
+			$config = Arr::get( $config, Str::finish( "projects.", $this->getProjectName()));
 			return strlen($path) > 0? Arr::get( $config, $path ): $config;
 		}
 		

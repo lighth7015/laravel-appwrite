@@ -35,14 +35,12 @@ class ServiceProvider extends Provider {
 		// @codeCoverageIgnoreEnd
 		$this->mergeConfigFrom($this->filename('config/appwrite.php'), 'appwrite');
 
-		$this->app->singleton(Client::class, function (Container $container) {
-			(($client = new Client))
-				->setEndpoint($this->config('endpoint'))
-				->setProject($this->config('credentials.project-id'))
-				->setKey($this->config('credentials.api-key'));
-
+		$this->app->bind(Client::class, function (Container $container) {
+			$client = new Client;
 			$selfSigned = Str::is($this->config('protocol'), 'https') && env('APP_DEBUG');
-			return $selfSigned? $client->setSelfSigned(): $client;
+
+			return ($selfSigned? $client->setSelfSigned(): $client)
+				->setEndpoint($this->config('endpoint'));
 		});
 	
 		$this->app->singleton(Account::class, static fn (Container $app) => $app->make(ProjectManager::class)->project()->auth());

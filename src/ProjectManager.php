@@ -20,7 +20,7 @@ class ProjectManager {
 
 	public function project(string $name = null): Project {
 		if (is_null( $name )) {
-			dd ("TODO.", $this->config());
+			dd ("TODO.", resolve(Project::class, array( 'project' => $this->getProjectName() )));
 		}
 		else if (Arr::has($this->projects, $name)) {
 			dd ("TODO: Implement named project");
