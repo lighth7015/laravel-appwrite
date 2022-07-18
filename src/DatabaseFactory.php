@@ -9,13 +9,11 @@ class DatabaseFactory {
 
 	private Client | null $client;
 	
-	public function __construct(Client $client, string $project) {
-		$this->client = $client->setProject((
-            $this->project = $project
-        ));
+	public function __construct(Client $client) {
+		$this->client = $client;
 	}
 
-	public function createInstance(): Databases | null {
+	public function createInstance(string $project): Databases | null {
         return null;
     }
 }
