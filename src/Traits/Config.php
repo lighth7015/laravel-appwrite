@@ -1,11 +1,12 @@
 <?php
 namespace Lighth7015\AppWrite\Traits;
-
-use Illuminate\Support\Str;
+use Illuminate\Support\Str,
+    Illuminate\Support\Arr;
 
 trait Config {
 	private function filename(string $file): string {
-		return realpath(Str::finish(__DIR__, Str::finish('/../', $file)));
+		dd(realpath(Str::finish(__DIR__, Str::finish('/../', $file))));
+        return realpath(Str::finish(__DIR__, Str::finish('/../', $file)));
 	}
 
 	protected function config(string | null ...$keys) {
@@ -28,6 +29,4 @@ trait Config {
 		$success = (!Str::startsWith($param, '{')  && !Str::startsWith($param, '/') && !Str::contains($param, ':\\'));
 		return call_user_func(fn (string $param): string => $success? $this->app->basePath($param): $param, $credentials);
 	}
-
-
 }
