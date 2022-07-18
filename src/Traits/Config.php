@@ -11,14 +11,12 @@ trait Config {
         $namespaces = array_map( fn(string $it) => strtolower($it), explode( '\\', __NAMESPACE__ ));
         $getParentNamespace = fn(int $index) => Arr::get( $namespaces, $index );
         
-        dd(call_user_func( $getParentNamespace, 1 ));
-        
         $path = implode( ".", array_reduce( $keys, function (array $keys, string | null $key) {
 			if (is_string($key)) array_push( $keys, $key );
 			return $keys;
 		}, array()));
 
-		if (is_null( $config = config( $namespace, null)) === false) {
+		if (is_null( $config = config( call_user_func( $getParentNamespace, 1 ), null)) === false) {
 			$config = Arr::get( $config, Str::finish( "projects.", Arr::get( $config, "project" )));
 			return strlen($path) > 0? Arr::get( $config, $path ): $config;
 		}
