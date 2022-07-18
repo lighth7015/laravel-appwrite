@@ -4,7 +4,6 @@ namespace Lighth7015\AppWrite;
 use Appwrite\Client,
 	Appwrite\Services\Account,
 	Appwrite\Services\Avatars,
-	Appwrite\Services\Databases,
 	Appwrite\Services\Functions,
 	Appwrite\Services\Health,
 	Appwrite\Services\Locale,
@@ -17,7 +16,7 @@ class Project {
 
 	private Account | null $account;
 	private Avatars | null $avatars;
-	private Databases | null $databases;
+	private DatabaseFactory $databases;
 	private Functions | null $functions;
 	private Health | null $health;
 	private Locale | null $locale;
@@ -30,20 +29,20 @@ class Project {
 			$this->project = $project
 		));
 		
-		$this->account = new Account($client);
-		$this->avatars = new Avatars($client);
-		$this->databases = new Databases($client);
-		$this->functions = new Functions($client);
-		$this->health = new Health($client);
-		$this->locale = new Locale($client);
-		$this->storage = new Storage($client);
-		$this->teams = new Teams($client);
-		$this->users = new Users($client);
+		$this->account = resolve( Account::class );
+		$this->avatars = resolve( Avatars::class );
+		$this->databases = resolve( DatabaseFactory::class );
+		$this->functions = resolve( Functions::class );
+		$this->health = resolve( Health::class );
+		$this->locale = resolve(Locale::class );
+		$this->storage = resolve(Storage::class );
+		$this->teams = resolve( Teams::class );
+		$this->users = resolve( Users::class );
 	}
 
 	public function account(): Account { return $this->account; }
 	public function avatars(): Avatars { return $this->avatars; }
-	public function databases(): Databases { return $this->databases; }
+	public function factory(): DatabaseFactory { return $this->databases; }
 	public function functions(): Functions { return $this->functions; }
 	public function storage(): Storage { return $this->storage; }
 	public function health(): Health { return $this->health; }

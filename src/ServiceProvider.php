@@ -44,6 +44,8 @@ class ServiceProvider extends Provider {
 		});
 	
 		$this->app->singleton(Account::class, static fn (Container $app) => $app->make(ProjectManager::class)->project()->auth());
+		$this->app->singleton(DatabaseFactory::class, static fn (Container $app) => $app->make(DatabaseFactory::class));
+		
 		$this->app->alias(Account::class, 'appwrite.auth');
 		
 		dd(resolve(Account::class));
