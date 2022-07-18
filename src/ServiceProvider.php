@@ -2,7 +2,7 @@
 namespace Lighth7015\AppWrite;
 
 use Appwrite\Client,
-	InvalidArgumentException;
+	Appwrite\Services\Account;
 
 use Illuminate\Contracts\Container\Container,
 	Illuminate\Support\Arr,
@@ -12,6 +12,7 @@ use Laravel\Lumen\Application as Lumen;
 use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider {
+	use Traits\Config;
 	private static string $key = "appwrite";
 
 	public function boot(): void {
@@ -23,24 +24,6 @@ class ServiceProvider extends Provider {
 			
 			$this->publishes(array( $filename => $resolved ), 'config');
 		}
-	}
-
-	private function filename(string $file): string {
-		return realpath(Str::finish(__DIR__, Str::finish('/../', $file)));
-	}
-
-	protected function config(string | null ...$keys): array | string | bool | null {
-		$path = implode( ".", array_reduce( $keys, function (array $keys, string | null $key): array {
-			if (is_string($key)) array_push( $keys, $key );
-			return $keys;
-		}, array()));
-
-		if (is_null( $config = config(str(__NAMESPACE__)->after('\\')->lower()->toString(), null)) === false) {
-			$config = Arr::get( $config, Str::finish( "projects.", Arr::get( $config, "project" )));
-			return strlen($path) > 0? Arr::get( $config, $path ): $config;
-		}
-		
-		return $config;
 	}
 
 	public function register(): void {
@@ -62,10 +45,8 @@ class ServiceProvider extends Provider {
 			return $selfSigned? $client->setSelfSigned(): $client;
 		});
 	
-		//$this->app->alias(Client::class, 'appwrite.manager');
-		
-		// $this->app->singleton(Appwrite\Services\Accont::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->auth());
-		// $this->app->alias(Appwrite\Services\Account::class, 'appwrite.auth');
+		$this->app->singleton(Account::class, static fn (Container $app) => $app->make(ProjectManager::class)->project()->auth());
+		$this->app->alias(Account::class, 'appwrite.auth');
 
 		// $this->app->singleton(AppWrite\Contract\Database::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->database());
 		// $this->app->alias(AppWrite\Contract\Database::class, 'appwrite.database');
