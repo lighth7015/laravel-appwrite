@@ -46,15 +46,19 @@ return [
              * first time you try to access a component of the Firebase Admin SDK.
              *
              */
-            'credentials' => [
-                'file' => env('APPWRITE_CREDENTIALS', env('GOOGLE_APPLICATION_CREDENTIALS')),
+            'endpoint' => Str::finish(
+                env('APPWRITE_PROTOCOL', 'http'), Str::finish('://', Str::finish(
+                    env('APPWRITE_ENDPOINT', 'localhost'), Str::finish('/',
+                        env('APPWRITE_API_VERSION')
+                    )
+                ))
+            ),
 
-                /*
-                 * If you want to prevent the auto discovery of credentials, set the
-                 * following parameter to false. If you disable it, you must
-                 * provide a credentials file.
-                 */
-                'auto_discovery' => true,
+            'protocol' => env('APPWRITE_PROTOCOL', 'http'),
+
+            'credentials' => [
+                'project-id' => env('APPWRITE_PROJECT_ID', null),
+                'api-key' => env('APPWRITE_API_KEY', null)
             ],
 
             /*

@@ -37,7 +37,7 @@
                 "Lighth7015\\AppWrite\\ServiceProvider"
             ],
             "aliases": {
-                "Firebase": "Lighth7015\\AppWrite\\Facades\\Firebase"
+                "AppWrite": "Lighth7015\\AppWrite\\Facades\\AppWrite"
             }
         }
     }

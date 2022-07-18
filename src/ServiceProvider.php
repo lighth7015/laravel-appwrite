@@ -1,10 +1,12 @@
 <?php declare(strict_types=1);
 namespace Lighth7015\AppWrite;
 
-use Appwrite\Client;
+use Appwrite\Client,
+	InvalidArgumentException;
 
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Support\Str;
+use Illuminate\Contracts\Container\Container,
+	Illuminate\Support\Arr,
+	Illuminate\Support\Str;
 
 use Laravel\Lumen\Application as Lumen;
 use Illuminate\Support\ServiceProvider as Provider;
@@ -24,19 +26,21 @@ class ServiceProvider extends Provider {
 	}
 
 	private function filename(string $file): string {
-		return realpath(Str::finish(__DIR__, Str::finish('../', $file)));
+		return realpath(Str::finish(__DIR__, Str::finish('/../', $file)));
 	}
 
-	protected function config(string $name = null): array {
-		$withConfigKey = fn (string ...$keys): string => count($keys) > 0? Str::finish( static::$key, implode(".", $keys )): static::$key;
-		$withException = fn (string $param, string $prefix, string $suffix) => sprintf("%s %s %s", $prefix, $param, $suffix);
+	protected function config(string | null ...$keys): array | string | bool | null {
+		$path = implode( ".", array_reduce( $keys, function (array $keys, string | null $key): array {
+			if (is_string($key)) array_push( $keys, $key );
+			return $keys;
+		}, array()));
+
+		if (is_null( $config = config(str(__NAMESPACE__)->after('\\')->lower()->toString(), null)) === false) {
+			$config = Arr::get( $config, Str::finish( "projects.", Arr::get( $config, "project" )));
+			return strlen($path) > 0? Arr::get( $config, $path ): $config;
+		}
 		
-		if (is_null( $config = config( withConfigKey( 'projects', $name ), null ))) {
-			throw new InvalidArgumentException(call_user_func($withException, $name, "AppWrite Project", "is not configured." ));
-		}
-		else {
-			return $config;
-		}
+		return $config;
 	}
 
 	public function register(): void {
@@ -48,19 +52,17 @@ class ServiceProvider extends Provider {
 		// @codeCoverageIgnoreEnd
 		$this->mergeConfigFrom($this->filename('config/appwrite.php'), 'appwrite');
 
-		dd($this->config());
-		/*
 		$this->app->singleton(Client::class, function (Container $container) {
-			$client = (new Client($app))
-				->setEndpoint()
-				->setProject()
-				->setKey();
+			(($client = new Client))
+				->setEndpoint($this->config('endpoint'))
+				->setProject($this->config('credentials.project-id'))
+				->setKey($this->config('credentials.api-key'));
 
-			// if (Arr::get())
+			$selfSigned = Str::is($this->config('protocol'), 'https') && env('APP_DEBUG');
+			return $selfSigned? $client->setSelfSigned(): $client;
 		});
-		*/		
-		
-		//$this->app->alias(AppWriteProjectManager::class, 'appwrite.manager');
+	
+		//$this->app->alias(Client::class, 'appwrite.manager');
 		
 		// $this->app->singleton(Appwrite\Services\Accont::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->auth());
 		// $this->app->alias(Appwrite\Services\Account::class, 'appwrite.auth');
