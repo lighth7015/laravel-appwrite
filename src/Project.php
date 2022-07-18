@@ -29,15 +29,15 @@ class Project {
 			$this->project = $project
 		));
 		
-		$this->account = resolve( Account::class );
-		$this->avatars = resolve( Avatars::class );
-		$this->databases = resolve( DatabaseFactory::class );
-		$this->functions = resolve( Functions::class );
-		$this->health = resolve( Health::class );
-		$this->locale = resolve(Locale::class );
-		$this->storage = resolve(Storage::class );
-		$this->teams = resolve( Teams::class );
-		$this->users = resolve( Users::class );
+		$this->account = new Account($client);
+		$this->avatars = new Avatars($client);
+		$this->databases = new DatabaseFactory($client);
+		$this->functions = new Functions($client);
+		$this->health = new Health($client);
+		$this->locale = new Locale($client);
+		$this->storage = new Storage($client);
+		$this->teams = new Teams($client);
+		$this->users = new Users($client);
 	}
 
 	public function account(): Account { return $this->account; }
