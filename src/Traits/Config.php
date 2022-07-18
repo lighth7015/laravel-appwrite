@@ -5,8 +5,7 @@ use Illuminate\Support\Str,
 
 trait Config {
 	private function filename(string $file): string {
-		dd(realpath(Str::finish(__DIR__, Str::finish('/../', $file))));
-        return realpath(Str::finish(__DIR__, Str::finish('/../', $file)));
+		return realpath(Str::finish(__DIR__, Str::finish('/../../', $file)));
 	}
 
 	protected function config(string | null ...$keys) {
