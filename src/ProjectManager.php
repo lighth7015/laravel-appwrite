@@ -19,15 +19,12 @@ class ProjectManager {
 	}
 
 	public function project(string $name = null): Project {
-		//if (Arr::has($this->projects, $name))
-		if (is_null( $name ) === false) {
-
+		if (is_null( $name )) {
+			dd ("TODO.", $this->config());
 		}
-		else {
-
+		else if (Arr::has($this->projects, $name)) {
+			dd ("TODO: Implement named project");
 		}
-
-		dd ("TODO: Implement.");
 	}
 
 	protected function configure(string $name): Project {
