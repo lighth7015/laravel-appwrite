@@ -1,16 +1,11 @@
 <?php declare(strict_types=1);
 namespace Lighth7015\AppWrite;
 
-use Lighth7015\AppWrite\Traits;
+use Illuminate\Support\Str,
+	Lighth7015\AppWrite\Traits;
 
 use Illuminate\Contracts\Container\Container,
 	Illuminate\Contracts\Foundation\Application;
-
-use Appwrite\Exception\AppwriteException;
-use Appwrite\Client;
-
-use Symfony\Component\Cache\Adapter\Psr16Adapter;
-use Illuminate\Support\Str;
 
 class ProjectManager {
 	use Traits\Config;
@@ -22,7 +17,7 @@ class ProjectManager {
 		$this->app = $app;
 	}
 
-	public function project(string $name = null): AppWriteProject {
+	public function project(string $name = null): Project {
 		if (!isset($this->projects[$name = $name ?? $this->getDefaultProject()])) {
 			$this->projects[$name] = $this->configure($name);
 		}
@@ -30,7 +25,7 @@ class ProjectManager {
 		return $this->projects[$name];
 	}
 
-	protected function configure(string $name): AppWriteProject {
+	protected function configure(string $name): Project {
 		dd('TODO');
 	}
 
