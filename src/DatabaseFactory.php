@@ -5,9 +5,7 @@ use Appwrite\Client,
 	Appwrite\Services\Databases;
 
 class DatabaseFactory {
-	protected string $project;
-
-	private Client | null $client;
+	private Client $client;
 	
 	public function __construct(Client $client) {
 		$this->client = $client;
