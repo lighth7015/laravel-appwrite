@@ -1,5 +1,4 @@
-<?php
-namespace Lighth7015\AppWrite\Traits;
+<?php namespace Lighth7015\AppWrite\Traits;
 use Illuminate\Support\Str,
     Illuminate\Support\Arr;
 
@@ -9,7 +8,7 @@ trait Config {
 	}
 
 	protected function config(string | null ...$keys) {
-        $namespaces = explode( '\\', __NAMESPACE__ );
+        $namespaces = array_map( fn(string $it) => strtolower($it), explode( '\\', __NAMESPACE__ ));
         $getParentNamespace = fn(int $index) => Arr::get( $namespaces, $index );
         
         dd(call_user_func( $getParentNamespace, 1 ));
