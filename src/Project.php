@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 namespace Lighth7015\AppWrite;
 
-use Appwrite\Services\Account,
+use Appwrite\Client,
+	Appwrite\Services\Account,
 	Appwrite\Services\Avatars,
-	Appwrite\Services\Client,
 	Appwrite\Services\Databases,
 	Appwrite\Services\Functions,
 	Appwrite\Services\Health,
