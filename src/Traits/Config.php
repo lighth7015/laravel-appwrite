@@ -12,7 +12,7 @@ trait Config {
         $namespaces = explode( '\\', __NAMESPACE__ );
         $getParentNamespace = fn() => Arr::get( $namespaces, count($namespaces) > 2? count($namespaces) - 1: Arr::last($namespaces));
         
-        dd(call_user_func( $getParentNamespace ), $namespaces );
+        dd(call_user_func( $getParentNamespace ), $namespaces, count($namespaces) - 1 );
         
         $path = implode( ".", array_reduce( $keys, function (array $keys, string | null $key) {
 			if (is_string($key)) array_push( $keys, $key );
