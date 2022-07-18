@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 namespace Lighth7015\AppWrite;
 
-use Illuminate\Support\Str,
+use Illuminate\Support\Arr,
+	Illuminate\Support\Str,
 	Lighth7015\AppWrite\Traits;
 
 use Illuminate\Contracts\Container\Container,
@@ -18,11 +19,13 @@ class ProjectManager {
 	}
 
 	public function project(string $name = null): Project {
-		if (!isset($this->projects[$name = $name ?? $this->getDefaultProject()])) {
-			$this->projects[$name] = $this->configure($name);
-		}
+		//if (Arr::has($this->projects, $name))
+		if (is_null( $name ) === false) {
 
-		return $this->projects[$name];
+		}
+		else {
+
+		}
 	}
 
 	protected function configure(string $name): Project {
@@ -31,6 +34,7 @@ class ProjectManager {
 
 	// Pass call to default project
 	public function __call( string $method, array $parameters) {
-		return call_user_func_array( array($this->project(), $method), $parameters );
+		dd('TODO');
+		// return call_user_func_array( array($this->project(), $method), $parameters );
 	}
 }
