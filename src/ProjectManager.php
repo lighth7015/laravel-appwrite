@@ -23,7 +23,7 @@ class ProjectManager {
 			Arr::set( $this->projects, $this->getProjectName(), ( $project = 
 				resolve(Project::class, array( 'project' => $this->getProjectName() ))
 			));
-		
+			
 			return $project;
 		}
 	}

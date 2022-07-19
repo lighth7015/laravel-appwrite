@@ -34,7 +34,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Lighth7015\\AppWrite\\ServiceProvider"
+                "Lighth7015\\AppWrite\\ServiceProvider",
+                "Lighth7015\\AppWrite\\AuthServiceProvider"
             ],
             "aliases": {
                 "AppWrite": "Lighth7015\\AppWrite\\Facades\\AppWrite"

@@ -2,7 +2,7 @@
 namespace Lighth7015\AppWrite;
 
 use Appwrite\Client,
-	Appwrite\Services\Account;
+	Appwrite\Services\Users;
 
 use Illuminate\Contracts\Container\Container,
 	Illuminate\Support\Arr,
@@ -43,19 +43,11 @@ class ServiceProvider extends Provider {
 				->setEndpoint($this->config('endpoint'));
 		});
 	
-		$this->app->singleton(Account::class, static fn (Container $app) => $app->make(ProjectManager::class)->project()->auth());
-		$this->app->singleton(DatabaseFactory::class, static fn (Container $app) => $app->make(DatabaseFactory::class));
+		$this->app->singleton(Users::class, static fn (ProjectManager $instance) => $instance->project()->auth());
+		$this->app->alias(Users::class, 'appwrite.auth');
 		
-		$this->app->alias(Account::class, 'appwrite.auth');
-		
-		dd(resolve(Account::class));
-		
-		
-		// $this->app->singleton(AppWrite\Contract\Database::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->database());
-		// $this->app->alias(AppWrite\Contract\Database::class, 'appwrite.database');
-
-		// $this->app->singleton(AppWrite\Contract\DynamicLinks::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->dynamicLinks());
-		// $this->app->alias(AppWrite\Contract\DynamicLinks::class, 'appwrite.dynamic_links');
+		$this->app->singleton(Database::class, static fn (ProjectManager $instance) => $instance->database());
+		$this->app->alias(Database::class, 'appwrite.database');
 
 		// $this->app->singleton(AppWrite\Contract\Firestore::class, static fn (Container $app) => $app->make(AppWriteProjectManager::class)->project()->firestore());
 		// $this->app->alias(AppWrite\Contract\Firestore::class, 'appwrite.firestore');
