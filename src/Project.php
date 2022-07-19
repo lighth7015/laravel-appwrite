@@ -12,8 +12,6 @@ use Appwrite\Client,
 	Appwrite\Services\Users;
 
 class Project {
-	protected string $project;
-
 	private Account | null $account;
 	private Avatars | null $avatars;
 	private DatabaseFactory $databases;
@@ -25,9 +23,7 @@ class Project {
 	private Users | null $users;
 	
 	public function __construct(Client $client, string $project) {
-		$client = $client->setProject((
-			$this->project = $project
-		));
+		$this->client = $client->setProject($project);
 		
 		$this->account = new Account($client);
 		$this->avatars = new Avatars($client);
@@ -42,7 +38,9 @@ class Project {
 
 	public function account(): Account { return $this->account; }
 	public function avatars(): Avatars { return $this->avatars; }
-	public function factory(): DatabaseFactory { return $this->databases; }
+	public function factory(string $database): DatabaseFactory {
+		return $this->databases->createInstance($database);
+	}
 	public function functions(): Functions { return $this->functions; }
 	public function storage(): Storage { return $this->storage; }
 	public function health(): Health { return $this->health; }

@@ -2,11 +2,8 @@
 namespace Lighth7015\AppWrite;
 
 use Illuminate\Support\Arr,
-	Illuminate\Support\Str,
+	Illuminate\Contracts\Container\Container,
 	Lighth7015\AppWrite\Traits;
-
-use Illuminate\Contracts\Container\Container,
-	Illuminate\Contracts\Foundation\Application;
 
 class ProjectManager {
 	use Traits\Config;
@@ -19,21 +16,20 @@ class ProjectManager {
 	}
 
 	public function project(string $name = null): Project {
-		if (is_null( $name )) {
-			dd ("TODO.", resolve(Project::class, array( 'project' => $this->getProjectName() )));
+		if (is_string($name) && ($project = Arr::get($this->projects, $name, false))) {
+			return $project;
 		}
-		else if (Arr::has($this->projects, $name)) {
-			dd ("TODO: Implement named project");
+		else {
+			Arr::set( $this->projects, $this->getProjectName(), ( $project = 
+				resolve(Project::class, array( 'project' => $this->getProjectName() ))
+			));
+		
+			return $project;
 		}
-	}
-
-	protected function configure(string $name): Project {
-		dd('TODO');
 	}
 
 	// Pass call to default project
 	public function __call( string $method, array $parameters) {
-		dd('TODO');
-		// return call_user_func_array( array($this->project(), $method), $parameters );
+		return call_user_func_array( array($this->project(), $method), $parameters );
 	}
 }
