@@ -36,7 +36,8 @@ class Project {
 		$this->users = new Users($client);
 	}
 
-	public function auth(): Account { return $this->account; }
+	public function auth(): Users { return $this->users; }
+	public function account(): Users { return $this->account; }
 	public function avatars(): Avatars { return $this->avatars; }
 	public function factory(string $database): DatabaseFactory {
 		return $this->databases->createInstance($database);
@@ -46,5 +47,4 @@ class Project {
 	public function health(): Health { return $this->health; }
 	public function locale(): Locale { return $this->locale; }
 	public function teams(): Teams { return $this->teams; }
-	public function users(): Users { return $this->users; }
 }
