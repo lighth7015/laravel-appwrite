@@ -53,12 +53,9 @@ class AppWriteUserProvider implements UserProvider {
 
 	public function validateCredentials(Authenticatable $user, array $credentials) {
 		if (array_key_exists('password', $credentials)) {
-			// This is a simplified usage of Laravel's HTTP Client to call the external API
-			// You might need to send more info to the external service.
-			// Please refer to the HTTP Client docs to learn how to use it properly.
+			
+			
 			$response = Http::post('https://example.com/authenticate', [
-				// $user is the GenericUser instance created in
-				// the retrieveByCredentials() method above.
 				'email' => $user->email,
 				'password' => $credentials['password'],
 			]);
