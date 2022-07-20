@@ -8,11 +8,13 @@ use Illuminate\Contracts\Container\Container,
 	Illuminate\Support\Arr,
 	Illuminate\Support\Str;
 
-use Laravel\Lumen\Application as Lumen;
 use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider {
-	use Traits\Config;
+	use Traits\Config {
+		Traits\Config::config as config;
+	}
+	
 	private static string $key = "appwrite";
 
 	public function boot(): void {
@@ -27,12 +29,6 @@ class ServiceProvider extends Provider {
 	}
 
 	public function register(): void {
-		// @codeCoverageIgnoreStart
-		if ($this->app instanceof Lumen) {
-			$this->app->configure('appwrite');
-		}
-
-		// @codeCoverageIgnoreEnd
 		$this->mergeConfigFrom($this->filename('config/appwrite.php'), 'appwrite');
 
 		$this->app->bind(Client::class, function (Container $container) {

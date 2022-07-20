@@ -6,7 +6,6 @@ final class AppWrite {
 	
 	use Config {
 		Config::config as config;
-		Config::project as getProjectName;
-		Config::project as project;
+		Config::project as getProject;
 	}
 }
